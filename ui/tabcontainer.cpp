@@ -4,6 +4,10 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QScrollBar>
+#include <QFileInfo>
+#include <exception>
+
+using namespace std;
 
 TabContainer::TabContainer(QWidget *parent) :
     QDialog(parent),
@@ -33,7 +37,11 @@ TabContainer::~TabContainer()
 
 void TabContainer :: setupMcuSelectCombo()
 {
-    mcuList->parse_config();
+    try {
+        mcuList->parse_config();
+    } catch (exception &ex) {
+        QMessageBox::warning(this, "Error", QString(ex.what()));
+    }
     ui->mcuSelectCombo->addItems(mcuList->mcu_labels);
     ui->mcuSelectCombo->setCurrentIndex(mcuList->default_label());
 }
@@ -50,10 +58,21 @@ void TabContainer::on_mcuSelectCombo_currentIndexChanged(int index)
 
 void TabContainer::on_writeLFuseButton_clicked()
 {
+    if(ui->mcuSelectCombo->currentIndex()<0) {
+        return;
+    }
+
     if(dude->isValidFuse(ui->lfuseValue->text()))
     {
-        dude->writeLFuse(mcuList->mcus_by_label[ui->mcuSelectCombo->currentText()].id,
-                         ui->lfuseValue->text());
+        if(QMessageBox::information(
+                    this,
+                    "Write Low Fuse",
+                    "Are you sure to write the low fuse to 0x" + ui->lfuseValue->text().toUpper(),
+                    QMessageBox::Ok | QMessageBox::Cancel,
+                    QMessageBox::Cancel) == QMessageBox::Ok) {
+            dude->writeLFuse(mcuList->mcus_by_label[ui->mcuSelectCombo->currentText()].id,
+                             ui->lfuseValue->text());
+        }
     }else
     {
         QMessageBox::warning(this,
@@ -116,17 +135,35 @@ void TabContainer::on_openHexButton_clicked()
     if(!file.isEmpty())
     {
         dudeHexToWrite = file;
+        updateHexFilePathLabel();
         ui->console->append(dudeHexToWrite+" selected to write");
+    }
+}
+
+void TabContainer::updateHexFilePathLabel() {
+    if(ui->showFullPathCheckbox->isChecked()) {
+        ui->curHexFileLabel->setText(dudeHexToWrite);
+    }else {
+        QFileInfo info(dudeHexToWrite);
+        ui->curHexFileLabel->setText(info.fileName());
     }
 }
 
 void TabContainer::on_writeFlashButton_clicked()
 {
+    if(ui->mcuSelectCombo->currentIndex()<0) {
+        return;
+    }
+
     dude->writeFlash(mcuList->mcus_by_label[ui->mcuSelectCombo->currentText()].id,dudeHexToWrite);
 }
 
 void TabContainer::on_readFlashButton_clicked()
 {
+    if(ui->mcuSelectCombo->currentIndex()<0) {
+        return;
+    }
+
     dude->readFlash(mcuList->mcus_by_label[ui->mcuSelectCombo->currentText()].id);
 }
 
@@ -151,25 +188,48 @@ void TabContainer::on_saveHexButton_clicked()
 
 void TabContainer::on_readLFuseButton_clicked()
 {
+    if(ui->mcuSelectCombo->currentIndex()<0) {
+        return;
+    }
+
     dude->readLFuse(mcuList->mcus_by_label[ui->mcuSelectCombo->currentText()].id);
 }
 
 void TabContainer::on_readHFuseButton_clicked()
 {
+    if(ui->mcuSelectCombo->currentIndex()<0) {
+        return;
+    }
+
     dude->readHFuse(mcuList->mcus_by_label[ui->mcuSelectCombo->currentText()].id);
 }
 
 void TabContainer::on_readEFuseButton_clicked()
 {
+    if(ui->mcuSelectCombo->currentIndex()<0) {
+        return;
+    }
+
     dude->readEFuse(mcuList->mcus_by_label[ui->mcuSelectCombo->currentText()].id);
 }
 
 void TabContainer::on_writeHFuseButton_clicked()
 {
+    if(ui->mcuSelectCombo->currentIndex()<0) {
+        return;
+    }
+
     if(dude->isValidFuse(ui->hfuseValue->text()))
     {
-        dude->writeHFuse(mcuList->mcus_by_label[ui->mcuSelectCombo->currentText()].id,
-                         ui->hfuseValue->text());
+        if(QMessageBox::information(
+                    this,
+                    "Write High Fuse",
+                    "Are you sure to write the high fuse to 0x" + ui->hfuseValue->text().toUpper(),
+                    QMessageBox::Ok | QMessageBox::Cancel,
+                    QMessageBox::Cancel) == QMessageBox::Ok) {
+            dude->writeHFuse(mcuList->mcus_by_label[ui->mcuSelectCombo->currentText()].id,
+                             ui->hfuseValue->text());
+        }
     }else
     {
         QMessageBox::warning(this,
@@ -180,14 +240,53 @@ void TabContainer::on_writeHFuseButton_clicked()
 
 void TabContainer::on_writeEFuseButton_clicked()
 {
+    if(ui->mcuSelectCombo->currentIndex()<0) {
+        return;
+    }
+
     if(dude->isValidFuse(ui->efuseValue->text()))
     {
-        dude->writeEFuse(mcuList->mcus_by_label[ui->mcuSelectCombo->currentText()].id,
-                         ui->efuseValue->text());
+        if(QMessageBox::information(
+                    this,
+                    "Write Ext. Fuse",
+                    "Are you sure to write the extended fuse to 0x" + ui->efuseValue->text().toUpper(),
+                    QMessageBox::Ok | QMessageBox::Cancel,
+                    QMessageBox::Cancel) == QMessageBox::Ok) {
+            dude->writeEFuse(mcuList->mcus_by_label[ui->mcuSelectCombo->currentText()].id,
+                             ui->efuseValue->text());
+        }
     }else
     {
         QMessageBox::warning(this,
                              "Error",
                              "Please check the Ext. Fuse value again.");
+    }
+}
+
+void TabContainer::on_showFullPathCheckbox_stateChanged(int arg1)
+{
+    if(dudeHexToWrite.isEmpty()) {
+        return;
+    }
+
+    qDebug() << "Show full hex path:" << arg1;
+
+    updateHexFilePathLabel();
+}
+
+void TabContainer::on_chipEraseButton_clicked()
+{
+    if(ui->mcuSelectCombo->currentIndex()<0) {
+        return;
+    }
+
+
+    if(QMessageBox::information(
+                this,
+                "Chip Erase",
+                "Are you sure to erase the target chip (" + ui->mcuSelectCombo->currentText() + ") ?",
+                QMessageBox::Ok | QMessageBox::Cancel,
+                QMessageBox::Cancel) == QMessageBox::Ok) {
+        dude->chipErase(mcuList->mcus_by_label[ui->mcuSelectCombo->currentText()].id);
     }
 }

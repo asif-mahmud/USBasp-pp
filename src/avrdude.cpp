@@ -128,7 +128,8 @@ bool Avrdude :: isValidFuse(QString fuse)
     if(fuse.isEmpty())
         return false;
     bool check = true;
-    int fInt = fuse.toInt(&check,16);
+//    int fInt = fuse.toInt(&check,16);
+    fuse.toInt(&check, 16);
     return check;
 }
 
@@ -279,6 +280,24 @@ void Avrdude::writeHFuse(QString mcuId, QString fuse)
     args.append(mcuId);
     args.append("-U");
     args.append("hfuse:w:0x"+fuse+":m");
+
+    //Just for checking syntax
+//    foreach(QString s,args)
+//        qDebug()<<s;
+
+    writeFlag = true;
+    fuseOpFlag = true;
+    progressPos =-1;
+    this->start(avrdudeExe,args);
+}
+
+void Avrdude::chipErase(QString mcuId) {
+    QStringList args;
+    args.append("-c");
+    args.append("usbasp");
+    args.append("-p");
+    args.append(mcuId);
+    args.append("-e");
 
     //Just for checking syntax
 //    foreach(QString s,args)

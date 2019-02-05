@@ -3,6 +3,10 @@
 #include <QFile>
 #include <QRegExp>
 #include <QApplication>
+#include <exception>
+#include <stdexcept>
+
+using namespace std;
 
 Mcu::Mcu() {}
 
@@ -52,20 +56,20 @@ void McuList :: parse_config()
     if(conf.isEmpty())
     {
         qDebug()<< "Could not determine OS type";
-        return;
+        throw  runtime_error("Could not determine OS type");
     }
 
     QFile conf_file(conf);
     if(!conf_file.exists())
     {
         qDebug()<< "Could not find config <"<<conf<<"> file";
-        return;
+        throw runtime_error("Could not find " + conf.toStdString());
     }
 
     if(!conf_file.open(QFile::ReadOnly))
     {
         qDebug()<< "Could not open config <"<<conf<<"> file";
-        return;
+        throw runtime_error("Could not open " + conf.toStdString() + " to read.");
     }
 
     while(!conf_file.atEnd())

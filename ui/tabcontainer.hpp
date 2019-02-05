@@ -38,16 +38,18 @@ class TabContainer : public QDialog
         void on_readLFuseButton_clicked();
         void on_readHFuseButton_clicked();
         void on_readEFuseButton_clicked();
-
         void on_writeHFuseButton_clicked();
-
         void on_writeEFuseButton_clicked();
+        void on_showFullPathCheckbox_stateChanged(int arg1);
 
-private:
+        void on_chipEraseButton_clicked();
+
+    private:
             Ui::TabContainer *ui;
 
 
            void setupMcuSelectCombo();
+           void updateHexFilePathLabel();
 
 
            Avrdude * dude;

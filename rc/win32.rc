@@ -3,8 +3,8 @@
 101 ICON                       "images/logo.ico"
 
 VS_VERSION_INFO    VERSIONINFO
-FILEVERSION        2,0,0,0
-PRODUCTVERSION     2,0,0,0
+FILEVERSION        3,0,0,0
+PRODUCTVERSION     3,0,0,0
 FILEFLAGSMASK      VS_FFI_FILEFLAGSMASK
 #ifdef _DEBUG
   FILEFLAGS        VS_FF_DEBUG | VS_FF_PRERELEASE
@@ -21,12 +21,12 @@ BEGIN
     BEGIN
       VALUE "CompanyName", "Embedded Adda"
       VALUE "FileDescription", "Qt4 Based USBasp GUI"
-      VALUE "FileVersion", "2.0.0.0"
+      VALUE "FileVersion", "3.0.0.0"
       VALUE "InternalName", "USBasp++"
       VALUE "LegalCopyright", "Embedded Adda © 2015"
       VALUE "OriginalFilename", "USBasp-pp.exe"
       VALUE "ProductName", "USBasp++ GUI"
-      VALUE "ProductVersion", "2.0.0.0"
+      VALUE "ProductVersion", "3.0.0.0"
     END
   END
   BLOCK "VarFileInfo"

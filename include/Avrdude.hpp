@@ -21,6 +21,7 @@ class Avrdude : public QProcess
         void readLFuse(QString);
         void readHFuse(QString);
         void readEFuse(QString);
+        void chipErase(QString);
         static QRegExp prog_exp;
         static QRegExp fuse_exp;
 
