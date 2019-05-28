@@ -7,9 +7,14 @@ CustomGroupBox {
     title: qsTr("Current Configuration")
     property string currentHexFile: qsTr("none")
     property bool showFullHexPath: showFullHexPathSw.checked
+    property string extraFlags: extraFlagsField.text
 
     function setShowFullHexPathSw(flag) {
         showFullHexPathSw.checked = flag
+    }
+
+    function setInitialExtraFlags(flags) {
+        extraFlagsField.text = flags
     }
 
     ColumnLayout {
@@ -40,6 +45,7 @@ CustomGroupBox {
             }
 
             TextField {
+                id: extraFlagsField
                 Layout.fillWidth: true
             }
         }

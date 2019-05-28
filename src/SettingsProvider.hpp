@@ -18,6 +18,8 @@ class SettingsProvider : public QObject {
                  setPreserveConsoleOutput NOTIFY preserveConsoleOutputChanged)
   Q_PROPERTY(int currentPage READ currentPage WRITE setCurrentPage NOTIFY
                  currentPageChanged)
+  Q_PROPERTY(QString extraFlags READ extraFlags WRITE setExtraFlags NOTIFY
+                 extraFlagsChanged)
  private:
   SettingsProvider(QObject *parent = nullptr);
   inline QString joinPaths(QString prefix, QString path);
@@ -40,6 +42,8 @@ class SettingsProvider : public QObject {
   Q_INVOKABLE void setPreserveConsoleOutput(bool preserve);
   Q_INVOKABLE int currentPage() const;
   Q_INVOKABLE void setCurrentPage(int page);
+  Q_INVOKABLE QString extraFlags() const;
+  Q_INVOKABLE void setExtraFlags(QString flags);
 
  private:
   static SettingsProvider *m_settingsProviderInstance;
@@ -54,6 +58,7 @@ class SettingsProvider : public QObject {
   void showFullHexPathChanged();
   void preserveConsoleOutputChanged();
   void currentPageChanged();
+  void extraFlagsChanged();
 
  public slots:
 };

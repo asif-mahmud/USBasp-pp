@@ -188,6 +188,15 @@ void SettingsProvider::setCurrentPage(int page) {
   emit currentPageChanged();
 }
 
+QString SettingsProvider::extraFlags() const {
+  return m_settings->value("User/extraFlags", "").toString();
+}
+
+void SettingsProvider::setExtraFlags(QString flags) {
+  m_settings->setValue("User/extraFlags", flags);
+  emit extraFlagsChanged();
+}
+
 void SettingsProvider::loadSettings() {
   qDebug() << "Loading settings from" << m_settings->fileName();
 

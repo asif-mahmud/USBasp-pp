@@ -53,6 +53,8 @@ ApplicationWindow {
         }
         // set the current page index if available
         mainContent.setCurrentIndex(settingsProvider.currentPage)
+        // set initial extra command line flags
+        infoBox.setInitialExtraFlags(settingsProvider.extraFlags)
     }
 
     /**
