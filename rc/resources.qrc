@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/images">
-        <file>images/logo.png</file>
-    </qresource>
-    <qresource prefix="/docs">
-        <file>docs/gplv2.html</file>
-        <file>docs/credit.html</file>
-    </qresource>
-</RCC>
