@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ui/MainWindow.qml</file>
+        <file>ui/McuSelector.qml</file>
+        <file>ui/CustomGroupBox.qml</file>
+        <file>ui/InputBox.qml</file>
+        <file>ui/ActionBox.qml</file>
+        <file>ui/InfoBox.qml</file>
+        <file>docs/gpl-2.0.txt</file>
+        <file>images/logo.png</file>
+        <file>docs/about.txt</file>
+        <file>ui/ConsoleOutput.qml</file>
+    </qresource>
+</RCC>
