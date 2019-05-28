@@ -2,9 +2,6 @@ USBasp++
 A Qt based avrdude GUI application
 =================================
 
-Author: Asif Mahmud Shimon (RUET EEE 09)
-Github: https://github.com/asif-mahmud
-
 This is a cross platform GUI application to
 ease the usage of GNU avrdude programmer
 application. Avrdude is a commandline application
